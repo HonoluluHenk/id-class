@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+### JetBrains
+.idea
+*.iml
+
+### Maven template
+target/
+pom.xml.*
+release.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
