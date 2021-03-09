@@ -18,6 +18,11 @@ public class ID<Entity> extends AbstractID<Entity, UUID> {
 		return new ID<>(id, clazz);
 	}
 
+	// FIXME: do I want this?
+	public static <Entity> @NonNull ID<Entity> of(@NonNull String uuid, @NonNull Class<Entity> clazz) {
+		return new ID<>(UUID.fromString(uuid), clazz);
+	}
+
 	public static <Entity extends IDSupplier<UUID>>
 	@NonNull ID<Entity> from(
 			@NonNull Entity idSupplier

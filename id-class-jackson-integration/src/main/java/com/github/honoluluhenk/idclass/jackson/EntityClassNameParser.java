@@ -1,9 +1,10 @@
-package com.github.honoluluhenk.idclass;
+package com.github.honoluluhenk.idclass.jackson;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import com.github.honoluluhenk.idclass.AbstractID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 @RequiredArgsConstructor
 @Getter
-public class EntityClassNameParser implements Serializable {
+class EntityClassNameParser implements Serializable {
 	private static final long serialVersionUID = 1964409785023570224L;
 
 	@SuppressWarnings("rawtypes")

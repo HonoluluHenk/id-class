@@ -4,12 +4,15 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.example</groupId>
+	<groupId>com.github.honoluluhenk.id-class</groupId>
 	<artifactId>id-class-parent</artifactId>
-	<packaging>pom</packaging>
+
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
 	<modules>
 		<module>id-class</module>
+		<module>id-class-jackson-integration</module>
 	</modules>
 
 	<properties>
@@ -22,10 +25,22 @@
 		<lombok.version>1.18.16</lombok.version>
 		<checkerframework.version>3.8.0</checkerframework.version>
 		<mockito.version>3.6.28</mockito.version>
+
+		<quarkus-plugin.version>1.11.3.Final</quarkus-plugin.version>
+		<quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
+		<quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+		<quarkus.platform.version>1.11.3.Final</quarkus.platform.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>${quarkus.platform.group-id}</groupId>
+				<artifactId>${quarkus.platform.artifact-id}</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>

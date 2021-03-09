@@ -1,10 +1,12 @@
-package com.github.honoluluhenk.idclass;
+package com.github.honoluluhenk.idclass.jackson;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-import com.github.honoluluhenk.idclass.fixtures.SomeEntity;
+import com.github.honoluluhenk.idclass.ID;
+import com.github.honoluluhenk.idclass.jackson.testing.fixtures.SomeEntity;
 import lombok.var;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -86,7 +88,7 @@ class EntityClassNameParserTest {
 		Type[] type = m.getGenericParameterTypes();
 		var actual = parser.entityClassOf(type[0]);
 
-		assertThat(actual)
+		Assertions.assertThat(actual)
 				.isSameAs(SomeEntity.class);
 	}
 }

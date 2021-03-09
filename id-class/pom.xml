@@ -6,7 +6,7 @@
 
 	<parent>
 		<artifactId>id-class-parent</artifactId>
-		<groupId>org.example</groupId>
+		<groupId>com.github.honoluluhenk.id-class</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
