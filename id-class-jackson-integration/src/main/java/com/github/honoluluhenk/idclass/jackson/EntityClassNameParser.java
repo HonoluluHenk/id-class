@@ -5,58 +5,80 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import com.github.honoluluhenk.idclass.AbstractID;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import static java.util.Objects.requireNonNull;
+import lombok.var;
 
 @RequiredArgsConstructor
-@Getter
 class EntityClassNameParser implements Serializable {
 	private static final long serialVersionUID = 1964409785023570224L;
 
 	@SuppressWarnings("rawtypes")
 	private final Class<? extends AbstractID> entityClass;
 
-	public Class<?> entityClassOf(Type type) {
-		ParameterizedType paramType = validParameterizedType(type);
+	public Class<?> entityClassFrom(Type type) {
+		ParameterizedType idType = validParameterizedIDType(type);
 
-		// parameterized types do have at least one typeArgument
-		// ... or else they wouldn't be ParameterizedTypes but just simple Classes.
-		@SuppressWarnings("unchecked")
-		Class<AbstractID<?, ?>> entityClass = (Class<AbstractID<?, ?>>) paramType.getActualTypeArguments()[0];
-		requireNonNull(entityClass, String.format(
-				"%s does not have a generic class parameter????",
-				entityClass.getSimpleName()));
+		Class<?> entityTypeParam = validEntityTypeParam(idType);
 
-		return entityClass;
+		return entityTypeParam;
 	}
 
-	private ParameterizedType validParameterizedType(Type type) {
-		if (!ParameterizedType.class.isAssignableFrom(type.getClass())) {
-			if (!entityClass.isAssignableFrom((Class<?>) type)) {
-				// just for a better error message
-				throw illegalType(type);
-			}
+	private Class<?> validEntityTypeParam(ParameterizedType idType) {
+		// parameterized types do have at least one typeArgument
+		// ... or else they wouldn't be ParameterizedTypes but just simple Classes :)
+		Type entityParamType = idType.getActualTypeArguments()[0];
 
-			throw new IllegalArgumentException(String.format(
-					"%s required but got: %s",
-					ParameterizedType.class.getName(), type.getClass().getName()));
+		if (ParameterizedType.class.isAssignableFrom(entityParamType.getClass())) {
+			var result = (Class<?>) ((ParameterizedType) entityParamType).getRawType();
+			return result;
 		}
 
-		ParameterizedType parameterizedType = (ParameterizedType) type;
+		if (Class.class.isAssignableFrom(entityParamType.getClass())) {
+			var result = (Class<?>) entityParamType;
+			return result;
+		}
 
-		if (!entityClass.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-			// just for a better error message
+		// e.g.: GenericArrayType
+		throw entityParamTypeNotImplemented(entityParamType);
+	}
+
+	private ParameterizedType validParameterizedIDType(Type type) {
+		if (ParameterizedType.class.isAssignableFrom(type.getClass())) {
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+
+			if (entityClass.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
+				return parameterizedType;
+			}
+
 			throw illegalType(type);
 		}
 
-		return parameterizedType;
+		if (entityClass.isAssignableFrom((Class<?>) type)) {
+			throw rawType();
+		}
+
+		throw illegalType(type);
+
+	}
+
+	private IllegalArgumentException entityParamTypeNotImplemented(Type entityParamType) {
+		String message = String.format("Not yet implemented: %s = %s", entityParamType.getClass(), entityParamType);
+		var ex = new IllegalArgumentException(message);
+		return ex;
+	}
+
+	private IllegalArgumentException rawType() {
+		String message = String.format(
+				"%s required with generic type arguments but only got raw type",
+				entityClass.getName());
+		var ex = new IllegalArgumentException(message);
+		return ex;
 	}
 
 	private IllegalArgumentException illegalType(Type type) {
-		return new IllegalArgumentException(String.format("Can only parse class %s<?> but got: %s",
-				entityClass.getName(), type.getTypeName()));
+		String message = String.format("Can only parse class %s<?> but got: %s",
+				entityClass.getName(), type.getTypeName());
+		return new IllegalArgumentException(message);
 	}
 
 }

@@ -23,16 +23,20 @@ public class IDParamConverterProvider implements ParamConverterProvider {
 			Type genericType,
 			Annotation[] annotations
 	) {
-		if (!rawType.equals(ID.class)) {
+		if (!isApplicable(rawType)) {
 			return null;
 		}
 
 		var entityClass = new EntityClassNameParser(ID.class)
-				.entityClassOf(genericType);
+				.entityClassFrom(genericType);
 
 		ParamConverter<T> result = (ParamConverter<T>) new IDParamConverter(entityClass);
 
 		return result;
+	}
+
+	private <T> boolean isApplicable(Class<T> rawType) {
+		return rawType.equals(ID.class);
 	}
 
 	private static final class IDParamConverter implements ParamConverter<ID<?>> {

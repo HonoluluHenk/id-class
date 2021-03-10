@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -19,10 +20,16 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 
 	private Class<?> entityClass = null;
 
+	/**
+	 * Used for registering by user/Jackson-Module
+	 */
 	public IDDeserializer() {
 		super(ID.class);
 	}
 
+	/**
+	 * Used internally by contextual creation for the actual ID.
+	 */
 	private IDDeserializer(Class<?> entityClass) {
 		super(ID.class);
 
@@ -52,8 +59,19 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 			DeserializationContext ctxt,
 			BeanProperty property
 	) {
-		var idContentClass = property.getType().getBindings().getTypeParameters().get(0).getRawClass();
+		JavaType idType = property.getType();
+		var idEntityParamClass = parseIDGenericTypeArgument(idType);
 
-		return new IDDeserializer(idContentClass);
+		return new IDDeserializer(idEntityParamClass);
+	}
+
+	private Class<?> parseIDGenericTypeArgument(JavaType idType) {
+		Class<?> result = idType
+				.getBindings()
+				.getTypeParameters()
+				.get(0)
+				.getRawClass();
+
+		return result;
 	}
 }
