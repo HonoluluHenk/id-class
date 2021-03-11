@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.honoluluhenk.id-class</groupId>
@@ -11,15 +13,10 @@
 	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 	<!-- Release checklist                                                       -->
 	<!--                                                                         -->
-	<!-- checkout develop                                                        -->
+	<!-- checkout main                                                           -->
 	<!-- build:                                                                  -->
-	<!-- ./mvnw clean deploy -Possrh                                             -->
-	<!--                                                                         -->
-	<!-- Using maven-release-plugin:                                             -->
-	<!-- ./mvnw -B release:prepare                                               -->
-	<!-- git push all  (please note: cannot write two dashes in xml comments)    -->
-	<!-- ./mvnw -B release:clean                                                 -->
-	<!-- rebase master to the the tagged commit and wait for gitlab              -->
+	<!-- ./mvnw release:prepare                                                  -->
+	<!-- ./mvnw release:perform                                                  -->
 	<!--                                                                         -->
 	<!-- Do not forget to update releases on github                              -->
 	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
