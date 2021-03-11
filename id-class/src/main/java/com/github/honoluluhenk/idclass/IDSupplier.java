@@ -1,6 +1,7 @@
 package com.github.honoluluhenk.idclass;
 
-@FunctionalInterface
+import lombok.NonNull;
+
 public interface IDSupplier<Id> {
-	Id getId();
+	@NonNull Id getId();
 }
