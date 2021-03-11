@@ -6,7 +6,6 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.var;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.Contract;
 
@@ -53,7 +52,7 @@ public class ID<Entity> extends AbstractID<Entity, UUID> implements Serializable
 			return null;
 		}
 
-		var result = parse(UUID.fromString(uuid), entityClass);
+		ID<T> result = parse(UUID.fromString(uuid), entityClass);
 
 		return result;
 	}
@@ -68,7 +67,7 @@ public class ID<Entity> extends AbstractID<Entity, UUID> implements Serializable
 			return null;
 		}
 
-		var result = ID.of(id, entityClass);
+		ID<T> result = ID.of(id, entityClass);
 
 		return result;
 	}

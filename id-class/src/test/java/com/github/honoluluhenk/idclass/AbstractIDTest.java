@@ -3,7 +3,6 @@ package com.github.honoluluhenk.idclass;
 import java.util.UUID;
 
 import com.github.honoluluhenk.idclass.fixtures.SomeEntity;
-import lombok.var;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -27,7 +26,7 @@ class AbstractIDTest {
 		@Test
 		void includes_subclass_name() {
 
-			var actual = new MyID().toString();
+			String actual = new MyID().toString();
 
 			assertThat(actual)
 					.startsWith("MyID");
@@ -36,7 +35,7 @@ class AbstractIDTest {
 		@Test
 		void includes_id_and_entity() {
 
-			var actual = new MyID().toString();
+			String actual = new MyID().toString();
 
 			assertThat(actual)
 					.contains("[bfab0fb5-3309-4645-bcb6-76ca45250814,SomeEntity]");

@@ -10,6 +10,44 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Wraps common entity id types and associates it with its defining entity class.
+	</description>
+	<url>https://github.com/HonoluluHenk/id-class</url>
+
+	<scm>
+		<connection>scm:git:https://github.com/HonoluluHenk/id-class.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/HonoluluHenk/id-class.git</developerConnection>
+		<url>https://github.com/HonoluluHenk/id-class</url>
+		<tag>1.0.5</tag>
+	</scm>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/HonoluluHenk/id-class</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>gitlab</system>
+		<url>https://gitlab.com/HonoluluHenk/id-class</url>
+	</ciManagement>
+
+	<licenses>
+		<license>
+			<name>LGPL-3.0</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>HonoluluHenk</id>
+			<name>Christoph Linder</name>
+			<url>https://github.com/HonoluluHenk</url>
+		</developer>
+	</developers>
+
 	<modules>
 		<module>id-class</module>
 		<module>id-class-jackson-integration</module>
@@ -112,105 +150,184 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
-					<executions>
-						<execution>
-							<id>default-compile</id>
-						</execution>
-					</executions>
-					<configuration>
-						<!-- required by checkerframework -->
-						<fork>true</fork>
-						<compilerArguments>
-							<Xmaxerrs>10000</Xmaxerrs>
-							<Xmaxwarns>10000</Xmaxwarns>
-						</compilerArguments>
-						<annotationProcessorPaths>
-							<path>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-								<version>${lombok.version}</version>
-							</path>
-							<path>
-								<groupId>org.checkerframework</groupId>
-								<artifactId>checker</artifactId>
-								<version>${checkerframework.version}</version>
-							</path>
-						</annotationProcessorPaths>
-						<annotationProcessors>
-							<!-- Add all the checkers you want to enable here -->
-							<!-- FIXME: current IntelliJ version is b0rked :( -->
-							<!--<annotationProcessor>-->
-							<!--  org.checkerframework.checker.nullness.NullnessChecker-->
-							<!--</annotationProcessor>-->
-							<annotationProcessor>
-								lombok.launch.AnnotationProcessorHider$AnnotationProcessor
-							</annotationProcessor>
-							<annotationProcessor>
-								lombok.launch.AnnotationProcessorHider$ClaimingProcessor
-							</annotationProcessor>
-						</annotationProcessors>
-						<compilerArgs>
-							<arg>-parameters</arg>
-							<!-- <arg>-Awarns</arg> --> <!-- -Awarns turns type-checking errors into warnings. -->
-							<arg>-Xlint:all</arg>
-							<!-- why does this lead to compilation failure although there are no errors/warnings -->
-							<!--<arg>-Werror</arg>-->
-						</compilerArgs>
-					</configuration>
-					<dependencies>
-						<dependency>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- required by checkerframework -->
+					<fork>true</fork>
+					<compilerArguments>
+						<Xmaxerrs>10000</Xmaxerrs>
+						<Xmaxwarns>10000</Xmaxwarns>
+					</compilerArguments>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
 							<groupId>org.checkerframework</groupId>
 							<artifactId>checker</artifactId>
 							<version>${checkerframework.version}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
+						</path>
+					</annotationProcessorPaths>
+					<annotationProcessors>
+						<!-- Add all the checkers you want to enable here -->
+						<!-- FIXME: current IntelliJ version is b0rked :( -->
+						<!--<annotationProcessor>-->
+						<!--  org.checkerframework.checker.nullness.NullnessChecker-->
+						<!--</annotationProcessor>-->
+						<annotationProcessor>
+							lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+						</annotationProcessor>
+						<annotationProcessor>
+							lombok.launch.AnnotationProcessorHider$ClaimingProcessor
+						</annotationProcessor>
+					</annotationProcessors>
+					<compilerArgs>
+						<arg>-parameters</arg>
+						<!-- <arg>-Awarns</arg> --> <!-- -Awarns turns type-checking errors into warnings. -->
+						<arg>-Xlint:all</arg>
+						<!-- why does this lead to compilation failure although there are no errors/warnings -->
+						<!--<arg>-Werror</arg>-->
+					</compilerArgs>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.checkerframework</groupId>
+						<artifactId>checker</artifactId>
+						<version>${checkerframework.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.2</version>
-				</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.2.0</version>
-				</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>1-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.2</version>
-				</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>javadoc</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<!-- javadoc cannot find references that get generated by lombok :( -->
+							<failOnError>false</failOnError>
+							<doclint>none</doclint>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
-				</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<packageName>true</packageName>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>3.0.0-M1</version>
-					<configuration>
-						<tagNameFormat>@{version}</tagNameFormat>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<executable>gpg</executable>
+							<!--suppress UnresolvedMavenProperty -->
+							<keyname>${env.OSSRH_SIGNKEY_NAME}</keyname>
+							<passphraseServerId>fluent-bigdecimal-ossrh-signkey</passphraseServerId>
+							<gpgArguments>
+								<argument>--batch</argument>
+								<argument>--pinentry-mode</argument>
+								<argument>loopback</argument>
+							</gpgArguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.0-M1</version>
+				<configuration>
+					<tagNameFormat>@{version}</tagNameFormat>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

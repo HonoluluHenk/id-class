@@ -6,7 +6,6 @@ import java.lang.reflect.Type;
 
 import com.github.honoluluhenk.idclass.AbstractID;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 
 @RequiredArgsConstructor
 class EntityClassNameParser implements Serializable {
@@ -29,12 +28,12 @@ class EntityClassNameParser implements Serializable {
 		Type entityParamType = idType.getActualTypeArguments()[0];
 
 		if (ParameterizedType.class.isAssignableFrom(entityParamType.getClass())) {
-			var result = (Class<?>) ((ParameterizedType) entityParamType).getRawType();
+			Class<?> result = (Class<?>) ((ParameterizedType) entityParamType).getRawType();
 			return result;
 		}
 
 		if (Class.class.isAssignableFrom(entityParamType.getClass())) {
-			var result = (Class<?>) entityParamType;
+			Class<?> result = (Class<?>) entityParamType;
 			return result;
 		}
 
@@ -63,7 +62,7 @@ class EntityClassNameParser implements Serializable {
 
 	private IllegalArgumentException entityParamTypeNotImplemented(Type entityParamType) {
 		String message = String.format("Not yet implemented: %s = %s", entityParamType.getClass(), entityParamType);
-		var ex = new IllegalArgumentException(message);
+		IllegalArgumentException ex = new IllegalArgumentException(message);
 		return ex;
 	}
 
@@ -71,7 +70,7 @@ class EntityClassNameParser implements Serializable {
 		String message = String.format(
 				"%s required with generic type arguments but only got raw type",
 				entityClass.getName());
-		var ex = new IllegalArgumentException(message);
+		IllegalArgumentException ex = new IllegalArgumentException(message);
 		return ex;
 	}
 

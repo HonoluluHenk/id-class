@@ -9,7 +9,6 @@ import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
 import com.github.honoluluhenk.idclass.ID;
-import lombok.var;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +26,7 @@ public class IDParamConverterProvider implements ParamConverterProvider {
 			return null;
 		}
 
-		var entityClass = new EntityClassNameParser(ID.class)
+		Class<?> entityClass = new EntityClassNameParser(ID.class)
 				.entityClassFrom(genericType);
 
 		ParamConverter<T> result = (ParamConverter<T>) new IDParamConverter(entityClass);
@@ -42,6 +41,7 @@ public class IDParamConverterProvider implements ParamConverterProvider {
 	private static final class IDParamConverter implements ParamConverter<ID<?>> {
 		private final Class<?> entityClass;
 
+		@SuppressWarnings("CdiInjectionPointsInspection")
 		private IDParamConverter(Class<?> entityClass) {
 			this.entityClass = requireNonNull(entityClass);
 		}

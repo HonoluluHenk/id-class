@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.github.honoluluhenk.idclass.ID;
-import lombok.var;
 
 import static java.util.Objects.requireNonNull;
 
@@ -49,7 +48,7 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 			return null;
 		}
 
-		var result = ID.of(UUID.fromString(id), entityClass);
+		ID<?> result = ID.of(UUID.fromString(id), entityClass);
 
 		return result;
 	}
@@ -60,7 +59,7 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 			BeanProperty property
 	) {
 		JavaType idType = property.getType();
-		var idEntityParamClass = parseIDGenericTypeArgument(idType);
+		Class<?> idEntityParamClass = parseIDGenericTypeArgument(idType);
 
 		return new IDDeserializer(idEntityParamClass);
 	}

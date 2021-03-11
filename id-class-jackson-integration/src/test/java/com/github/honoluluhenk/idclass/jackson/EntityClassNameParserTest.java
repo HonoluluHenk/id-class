@@ -5,7 +5,6 @@ import java.lang.reflect.Type;
 
 import com.github.honoluluhenk.idclass.ID;
 import com.github.honoluluhenk.idclass.jackson.testing.fixtures.SomeEntity;
-import lombok.var;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +22,7 @@ class EntityClassNameParserTest {
 	class parsing_something_other_than_ID {
 		@Test
 		void throws_exception_on_plain_class() {
-			var ex = assertThrows(
+			IllegalArgumentException ex = assertThrows(
 					IllegalArgumentException.class,
 					() -> parser.entityClassFrom(Object.class)
 			);
@@ -38,7 +37,7 @@ class EntityClassNameParserTest {
 				// nop
 			}
 
-			var bean = new Object() {
+			Object bean = new Object() {
 				void methodWithOtherGenericParam(OtherGenericType<SomeEntity> ignored) {
 					// nop
 				}
@@ -47,7 +46,7 @@ class EntityClassNameParserTest {
 			Method m = bean.getClass().getDeclaredMethod("methodWithOtherGenericParam", OtherGenericType.class);
 			Type type = m.getGenericParameterTypes()[0];
 
-			var ex = assertThrows(
+			IllegalArgumentException ex = assertThrows(
 					IllegalArgumentException.class,
 					() -> parser.entityClassFrom(type)
 			);
@@ -64,7 +63,7 @@ class EntityClassNameParserTest {
 	class parsing_a_raw_ID {
 		@Test
 		void throws_exception_with_good_error_message() throws NoSuchMethodException {
-			var bean = new Object() {
+			Object bean = new Object() {
 				void methodWithRawIDParam(ID ignored) {
 					// nop
 				}
@@ -73,7 +72,7 @@ class EntityClassNameParserTest {
 			Method m = bean.getClass().getDeclaredMethod("methodWithRawIDParam", ID.class);
 			Type type = m.getGenericParameterTypes()[0];
 
-			var ex = assertThrows(
+			IllegalArgumentException ex = assertThrows(
 					IllegalArgumentException.class,
 					() -> parser.entityClassFrom(type));
 
@@ -86,7 +85,7 @@ class EntityClassNameParserTest {
 	class parsing {
 		@Test
 		void extracts_the_generic_class_on_simple_entities() throws NoSuchMethodException {
-			var bean = new Object() {
+			Object bean = new Object() {
 				void methodWithGenericIDParam(ID<SomeEntity> id) {
 					// nop
 				}
@@ -94,7 +93,7 @@ class EntityClassNameParserTest {
 			Method m = bean.getClass().getDeclaredMethod("methodWithGenericIDParam", ID.class);
 			Type type = m.getGenericParameterTypes()[0];
 
-			var actual = parser.entityClassFrom(type);
+			Class<?> actual = parser.entityClassFrom(type);
 
 			assertThat(actual)
 					.isSameAs(SomeEntity.class);
@@ -106,7 +105,7 @@ class EntityClassNameParserTest {
 				// nop
 			}
 
-			var bean = new Object() {
+			Object bean = new Object() {
 				void methodWithGenericIDParam(ID<GenericEntity<String>> id) {
 					// nop
 				}
@@ -115,7 +114,7 @@ class EntityClassNameParserTest {
 			Method m = bean.getClass().getDeclaredMethod("methodWithGenericIDParam", ID.class);
 			Type type = m.getGenericParameterTypes()[0];
 
-			var actual = parser.entityClassFrom(type);
+			Class<?> actual = parser.entityClassFrom(type);
 
 			assertThat(actual)
 					.isSameAs(GenericEntity.class);
@@ -127,7 +126,7 @@ class EntityClassNameParserTest {
 				// nop
 			}
 
-			var bean = new Object() {
+			Object bean = new Object() {
 				void methodWithGenericIDParam(ID<GenericEntity<String>[]> id) {
 					// nop
 				}
@@ -136,7 +135,7 @@ class EntityClassNameParserTest {
 			Method m = bean.getClass().getDeclaredMethod("methodWithGenericIDParam", ID.class);
 			Type type = m.getGenericParameterTypes()[0];
 
-			var ex = assertThrows(
+			IllegalArgumentException ex = assertThrows(
 					IllegalArgumentException.class,
 					() -> parser.entityClassFrom(type));
 
