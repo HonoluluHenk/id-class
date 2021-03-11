@@ -1,4 +1,4 @@
-package com.github.honoluluhenk.idclass.jackson.testing.setup;
+package com.github.honoluluhenk.idclass.jackson.integrationtest.setup;
 
 import javax.inject.Singleton;
 

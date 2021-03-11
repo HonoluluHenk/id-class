@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 import com.github.honoluluhenk.idclass.ID;
-import com.github.honoluluhenk.idclass.jackson.testing.fixtures.SomeEntity;
+import com.github.honoluluhenk.idclass.jackson.integrationtest.fixtures.SomeEntity;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;

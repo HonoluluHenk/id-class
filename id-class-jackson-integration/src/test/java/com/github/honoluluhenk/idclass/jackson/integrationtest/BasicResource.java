@@ -1,4 +1,4 @@
-package com.github.honoluluhenk.idclass.jackson.testing;
+package com.github.honoluluhenk.idclass.jackson.integrationtest;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -8,8 +8,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.github.honoluluhenk.idclass.ID;
-import com.github.honoluluhenk.idclass.jackson.testing.fixtures.SomeDTO;
-import com.github.honoluluhenk.idclass.jackson.testing.fixtures.SomeEntity;
+import com.github.honoluluhenk.idclass.jackson.integrationtest.fixtures.SomeDTO;
+import com.github.honoluluhenk.idclass.jackson.integrationtest.fixtures.SomeEntity;
 
 @Path("/basic")
 @Produces(MediaType.APPLICATION_JSON)

@@ -1,4 +1,4 @@
-package com.github.honoluluhenk.idclass.jackson.testing;
+package com.github.honoluluhenk.idclass.jackson.integrationtest;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

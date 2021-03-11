@@ -1,4 +1,4 @@
-package com.github.honoluluhenk.idclass.jackson.testing.fixtures;
+package com.github.honoluluhenk.idclass.jackson.integrationtest.fixtures;
 
 import com.github.honoluluhenk.idclass.ID;
 import lombok.Data;
