@@ -10,6 +10,22 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+	<!-- Release checklist                                                       -->
+	<!--                                                                         -->
+	<!-- checkout develop                                                        -->
+	<!-- build:                                                                  -->
+	<!-- ./mvnw clean deploy -Possrh                                             -->
+	<!--                                                                         -->
+	<!-- Using maven-release-plugin:                                             -->
+	<!-- ./mvnw -B release:prepare                                               -->
+	<!-- git push all  (please note: cannot write two dashes in xml comments)    -->
+	<!-- ./mvnw -B release:clean                                                 -->
+	<!-- rebase master to the the tagged commit and wait for gitlab              -->
+	<!--                                                                         -->
+	<!-- Do not forget to update releases on github                              -->
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
 		Wraps common entity id types and associates it with its defining entity class.
@@ -286,7 +302,7 @@
 							<executable>gpg</executable>
 							<!--suppress UnresolvedMavenProperty -->
 							<keyname>${env.OSSRH_SIGNKEY_NAME}</keyname>
-							<passphraseServerId>fluent-bigdecimal-ossrh-signkey</passphraseServerId>
+							<passphraseServerId>id-class-ossrh-signkey</passphraseServerId>
 							<gpgArguments>
 								<argument>--batch</argument>
 								<argument>--pinentry-mode</argument>
