@@ -15,6 +15,7 @@ public class ID<Entity> extends AbstractID<Entity, UUID> implements Serializable
 
 	private static final long serialVersionUID = 7424247026749697941L;
 
+	// FIXME: @NonNull nur wo's wirklich braucht
 	ID(
 			@NonNull UUID id,
 			@NonNull Class<Entity> clazz
@@ -23,8 +24,8 @@ public class ID<Entity> extends AbstractID<Entity, UUID> implements Serializable
 	}
 
 	public static <Entity> @NonNull ID<Entity> of(
-			@NonNull UUID id,
-			@NonNull Class<Entity> clazz
+			UUID id,
+			Class<Entity> clazz
 	) {
 		return new ID<>(id, clazz);
 	}
