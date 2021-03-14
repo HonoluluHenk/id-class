@@ -61,7 +61,9 @@
 
 	<modules>
 		<module>id-class</module>
+		<module>id-class-integration-support</module>
 		<module>id-class-jackson-integration</module>
+		<module>id-class-jpa-hibernate-integration</module>
 	</modules>
 
 	<properties>
