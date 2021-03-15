@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 @ToString
 public abstract class AbstractEntity<Entity extends AbstractEntity<Entity>> {
 	@Id
-	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDConverter")
+	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDType")
 	private ID<Entity> id;
 
 	public Entity setId(ID<Entity> id) {

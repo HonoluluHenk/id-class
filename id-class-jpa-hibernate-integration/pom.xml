@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.github.honoluluhenk.id-class</groupId>
-			<artifactId>id-class</artifactId>
+			<artifactId>id-class-integration-support</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

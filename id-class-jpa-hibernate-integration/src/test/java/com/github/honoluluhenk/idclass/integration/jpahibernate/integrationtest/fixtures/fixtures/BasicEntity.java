@@ -17,7 +17,7 @@ import org.hibernate.annotations.Type;
 @AllArgsConstructor
 public class BasicEntity {
 	@Id
-	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDConverter")
+	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDType")
 	private ID<BasicEntity> id;
 
 	public static BasicEntity of(UUID id) {
