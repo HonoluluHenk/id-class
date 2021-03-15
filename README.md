@@ -130,9 +130,11 @@ Jackson integration contains two parts:
   the [`@Provider`](https://docs.oracle.com/javaee/7/api/javax/ws/rs/ext/Provider.html) annotation)
 * a Jackson module containing Serializer/Deserializer to convert IDs in object bodys.
 
-You also need to manually customize the Jackson
+**You need to manually customize the Jackson
 Databind [`ObjectMapper`](https://fasterxml.github.io/jackson-databind/javadoc/2.7/com/fasterxml/jackson/databind/ObjectMapper.html)
-. There's a module for that:
+.**
+
+Fortunately, There's a module for that:
 
 ```java
 import com.fasterxml.jackson.databind.ObjectMapper;
