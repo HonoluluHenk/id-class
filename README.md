@@ -1,7 +1,7 @@
 ## id-class
 
-Helps binding IDs of objects/entitys to their type and thus prevents using IDs for the wrong object/entity - and
-implicitly documents the usage of an ID.
+Helps binding IDs of objects/entities to their type and thus prevents using IDs for the wrong object/entity - and
+implicitly documents the entity-type associated to the ID.
 
 ## Motivation
 
@@ -10,9 +10,11 @@ Have you ever mixed up your variables containing UUID/String/Long/... IDs in JPA
 Like maybe so?
 
 ```java
+import java.util.UUID;
+
 class SomeEntity {
 	@Id
-	public UUID id;
+	public UUID id = UUID.randomUUID();
 }
 
 class OtherEntity {
@@ -21,33 +23,39 @@ class OtherEntity {
 }
 
 class Foo {
-	void doStuff(OtherEntityDTO otherDTO) {
-		UUID someEntityId = otherDTO.getId(); // id gets "transformed" to id of wrong entity!
+	void doStuff(OtherEntity otherEntity) {
+		// id gets "transformed" to id of wrong entity:
+		UUID id = otherEntity.getId();
 
-		// and now you e.g. try to load SomeEntity with the id of OtherEntity but did not find anything:
-		SomeEntity someEntity = entityManager.find(SomeEntity.class, someEntityId);
+		// and now you e.g. try to load SomeEntity
+		// with the id of OtherEntity but did not find anything:
+		SomeEntity someEntity = entityManager.find(SomeEntity.class, id);
 	}
 }
 ```
 
-id-class to the rescue: now you can have typed IDs bound to the entity:
+*id-class* to the rescue: now you can have typed IDs bound to the entity-type:
 
 ```java
 import com.github.honoluluhenk.idclass.ID;
 
 public class SomeEntity {
 	@Id
-	public ID<SomeEntity> id = ID.randomUUID(SomeEntity.class);
+	public ID<SomeEntity> id = ID.randomUUID(SomeEntity.class); // directly support ID generation
 }
-```
 
-The Example above would then look like this:
+class OtherEntity {
+	@Id
+	public UUID id;
+}
 
-```java
 class Foo {
-	void doStuff(SomeDTO someDTO) {
+	void doStuff(OtherEntity otherEntity) {
 		// compiler error: ID<OtherEntity> is not compatible with ID<SomeEntity>
-		ID<SomeEntity> idOfSomeEntity = someDTO.getIdOfOtherEntity();
+		ID<SomeEntity> id = otherEntity.getId();
+
+		// direct integration into hibernate!
+		SomeEntity someEntity = entityManager.find(SomeEntity.class, id);
 	}
 }
 
@@ -57,8 +65,8 @@ class Foo {
 
 You will also find modules to integrate this nicely into
 
-* JAX-RS [using Jackson](https://github.com/FasterXML/jackson)
-* JPA [using Hibernate](https://hibernate.org/)
+* [JAX-RS with Jackson](https://github.com/FasterXML/jackson)
+* [JPA with Hibernate](https://hibernate.org/)
 
 ## Installation/Basic Usage
 
@@ -89,6 +97,8 @@ class Foo {
 	//... and more
 }
 ```
+
+ID is immutable, comes with hashCode()/equals(), a nice toString() and implements Serializable.
 
 See javadoc comments or [ID.java source](id-class/src/main/java/com/github/honoluluhenk/idclass/ID.java).
 
@@ -135,6 +145,26 @@ class MyObjectMapperCustomizer {
 }
 ```
 
+Now you can use it in all possible places in JAX-RS ressources/DTOs:
+
+```java
+class JaxHello {
+	private ID<SomeEntity> entityID;
+	private String name;
+	// getters/setters omitted for brevity
+}
+
+@Path("hello")
+public class HelloResource {
+
+	@POST
+	@Path("{id}")
+	public JaxHello sayHello(@PathParam("id") ID<SomeEntity> entityID) {
+		return someService.findEntity(entityID);
+	}
+} 
+```
+
 ### JPA/Hibernate Integration
 
 Install using maven (also pulls in the basic ID class):
@@ -154,6 +184,7 @@ Install using maven (also pulls in the basic ID class):
 
 No you can start using the converter by attaching the
 Hibernate [`@Type` or `@TypeDef` annotation](https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#basic-custom-type)
+to the field in your entity:
 
 ```java
 import javax.persistence.Entity;
@@ -161,7 +192,9 @@ import javax.persistence.Id;
 
 import com.github.honoluluhenk.idclass.ID;
 
+@Entity
 class SomeEntity {
+
 	@Id
 	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDType")
 	private ID<Entity> id;
@@ -172,7 +205,7 @@ class SomeEntity {
 
 ## Credits
 
-Thanks to @xfh for this great idea!
+Thanks to [Fabio](@xfh) for this great idea!
 
 ## License
 
