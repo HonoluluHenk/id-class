@@ -31,6 +31,15 @@ public class ID<Entity> extends AbstractID<Entity, UUID> implements Serializable
 	}
 
 	/**
+	 * initialize using {@link UUID#randomUUID()}.
+	 */
+	public static <Entity> @NonNull ID<Entity> randomUUID(
+			Class<Entity> clazz
+	) {
+		return of(UUID.randomUUID(), clazz);
+	}
+
+	/**
 	 * See {@link UUID#fromString(String)}.
 	 *
 	 * @throws IllegalArgumentException – If name does not conform to the string representation

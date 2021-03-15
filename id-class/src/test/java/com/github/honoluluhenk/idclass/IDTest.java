@@ -130,4 +130,17 @@ class IDTest {
 
 	}
 
+	@Nested
+	class randomdUUID {
+
+		@Test
+		void generates_different_UUIDs() {
+			ID<SomeEntity> fist = ID.randomUUID(SomeEntity.class);
+			ID<SomeEntity> second = ID.randomUUID(SomeEntity.class);
+
+			assertThat(fist.getId())
+					.isNotEqualTo(second.getId());
+		}
+	}
+
 }
