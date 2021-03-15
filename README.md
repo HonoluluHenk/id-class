@@ -1,5 +1,11 @@
 ## id-class
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.honoluluhenk.id-class/id-class)](https://search.maven.org/artifact/com.github.honoluluhenk.id-class/id-class)
+[![Issues](https://img.shields.io/github/issues/HonoluluHenk/id-class)](https://github.com/HonoluluHenk/id-class/issues)
+[![GitHub contributors](https://img.shields.io/github/contributors/HonoluluHenk/id-class)](https://github.com/HonoluluHenk/id-class/graphs/contributors)
+[![GitHub stars](https://img.shields.io/github/stars/HonoluluHenk/id-class?style=social)](https://github.com/HonoluluHenk/id-class)
+[![GitHub forks](https://img.shields.io/github/forks/HonoluluHenk/id-class?style=social)](https://github.com/HonoluluHenk/id-class/network/members)
+
 Helps binding IDs of objects/entities to their type and thus prevents using IDs for the wrong object/entity - and
 implicitly documents the entity-type associated to the ID.
 
