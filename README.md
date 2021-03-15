@@ -205,7 +205,7 @@ class SomeEntity {
 
 ## Credits
 
-Thanks to [Fabio](@xfh) for this great idea!
+Thanks to [Fabio](https://github.com/xfh) for this great idea a long time ago!
 
 ## License
 
