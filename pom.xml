@@ -62,6 +62,8 @@
 		<module>id-class-integration-support</module>
 		<module>id-class-jackson-integration</module>
 		<module>id-class-jpa-hibernate-integration</module>
+		<module>id-class-jpa22-smartentitymanager</module>
+		<module>id-class-jpa21-smartentitymanager</module>
 	</modules>
 
 	<properties>
