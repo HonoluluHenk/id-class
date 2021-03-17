@@ -195,19 +195,95 @@ Hibernate [`@Type` or `@TypeDef` annotation](https://docs.jboss.org/hibernate/or
 to the field in your entity:
 
 ```java
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import com.github.honoluluhenk.idclass.ID;
+import org.hibernate.annotations.Type;
 
 @Entity
-class SomeEntity {
-
+public class SomeEntity {
 	@Id
 	@Type(type = "com.github.honoluluhenk.idclass.integration.jpahibernate.IDType")
-	private ID<Entity> id;
+	private ID<SomeEntity> id;
 
 	// ...
+}
+```
+
+### JPA EntityManager enhancements
+
+Install using maven (also pulls in id-class-jpa-hibernate-integration and the basic id-class).
+
+```xml
+
+<dependencies>
+	<dependency>
+		<groupId>com.github.honoluluhenk.id-class</groupId>
+		<artifactId>id-class-jpa22-smartentitymanager</artifactId>
+		<!-- JPA 2.1: (please open an issue if you need another JPA 2.x version)
+		<artifactId>id-class-jpa21-smartentitymanager</artifactId>
+		-->
+		<version>${id-class-parent.version}</version>
+	</dependency>
+</dependencies>
+```
+
+This package enhances the standard JPA EntityManager so you can use the ID classes directly.
+
+This also works with [Spring-Data](https://spring.io/projects/spring-data-jpa)!
+
+```java
+import com.github.honoluluhenk.idclass.ID;
+import com.github.honoluluhenk.idclass.integration.jpahibernate.SmartEntityManager;
+
+@RequestScoped
+@Transactional
+class MyDAO {
+
+	@PersistenceContext
+	private EntityManager em;
+
+	private SmartEntityManager db() {
+		return new SmartEntityManager(em);
+	}
+
+	// easier in the long run: implement your own @Producer and directly inject here:
+	// @Inject
+	// private SmartEntityManager sem;
+
+	public MyEntity findById(ID<MyEntity> entityID) {
+		return db()
+				.find(entityID);
+	}
+
+	// also implemented: Java8 Optionals:
+	public Optional<MyEntity> findOneByID(ID<MyEntity> entityID) {
+		return db()
+				.findOne(entityID);
+		
+		// same for Query/TypedQuery/StoreProcedureQuery: query.getSoleResult()
+	}
+}
+
+```
+
+SmartEntityManager might also be injected via e.g. your own @Produce method (CDI) or a Spring FactoryBean.
+
+Example for a CDI producer:
+
+```java
+import javax.enterprise.inject.Produces;
+
+import com.github.honoluluhenk.idclass.integration.jpahibernate.SmartEntityManager;
+
+@ApplicationScoped
+public class SmartEntityManagerProducer {
+	@PersistenceContext
+	EntityManager defaultEntitymanager;
+
+	@Produces
+	@RequestScoped
+	public SmartEntityManager produceSmartEntityManager() {
+		return new SmartEntityManager(defaultEntitymanager);
+	}
 }
 ```
 

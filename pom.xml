@@ -64,6 +64,7 @@
 		<module>id-class-jpa-hibernate-integration</module>
 		<module>id-class-jpa22-smartentitymanager</module>
 		<module>id-class-jpa21-smartentitymanager</module>
+		<module>id-class-readme-demos</module>
 	</modules>
 
 	<properties>
