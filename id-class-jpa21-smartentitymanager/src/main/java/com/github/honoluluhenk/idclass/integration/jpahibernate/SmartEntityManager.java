@@ -2,6 +2,8 @@ package com.github.honoluluhenk.idclass.integration.jpahibernate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
@@ -9,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -59,25 +62,45 @@ public class SmartEntityManager implements EntityManager {
 		return em.find(aClass, o);
 	}
 
+	public <T> Optional<T> findOne(Class<T> aClass, Object o) {
+		return wrapOne(() -> em.find(aClass, o));
+	}
+
 	/**
 	 * See {@link #find(Class, Object)}.
 	 */
-	public <Entity, ID extends AbstractID<Entity, ID>> Entity find(ID entityID) {
+	public <Entity, ID extends AbstractID<Entity, ?>> Entity find(ID entityID) {
 		Entity result = find(entityID.getEntityClass(), entityID.getId());
 		return result;
 	}
-	
+	/**
+	 * See {@link #find(Class, Object)}.
+	 */
+	public <Entity, ID extends AbstractID<Entity, ?>> Optional<Entity> findOne(ID entityID) {
+		return wrapOne(() -> find(entityID.getEntityClass(), entityID.getId()));
+	}
+
 	@Override
 	public <T> T find(Class<T> aClass, Object o, Map<String, Object> map) {
 		return em.find(aClass, o, map);
 	}
 
+	public <T> Optional<T> findOne(Class<T> aClass, Object o, Map<String, Object> map) {
+		return wrapOne(() -> em.find(aClass, o, map));
+	}
+
 	/**
 	 * See {link {@link #find(Class, Object, Map)}}.
 	 */
-	public <Entity, ID extends AbstractID<Entity, ID>> Entity find(ID entityID, Map<String, Object> map) {
-		Entity result = find(entityID.getEntityClass(), entityID.getId(), map);
-		return result;
+	public <Entity, ID extends AbstractID<Entity, ?>> Entity find(ID entityID, Map<String, Object> map) {
+		return find(entityID.getEntityClass(), entityID.getId(), map);
+	}
+
+	/**
+	 * See {link {@link #find(Class, Object, Map)}}.
+	 */
+	public <Entity, ID extends AbstractID<Entity, ?>> Optional<Entity> findOne(ID entityID, Map<String, Object> map) {
+		return wrapOne(() -> find(entityID.getEntityClass(), entityID.getId(), map));
 	}
 
 	@Override
@@ -85,9 +108,16 @@ public class SmartEntityManager implements EntityManager {
 		return em.find(aClass, o, lockModeType);
 	}
 
-	public <Entity, ID extends AbstractID<Entity, ID>> Entity find(ID entityID, LockModeType lockModeType) {
-		Entity result = find(entityID.getEntityClass(), entityID.getId(), lockModeType);
-		return result;
+	public <T> Optional<T> findOne(Class<T> aClass, Object o, LockModeType lockModeType) {
+		return wrapOne(() -> em.find(aClass, o, lockModeType));
+	}
+
+	public <Entity, ID extends AbstractID<Entity, ?>> Entity find(ID entityID, LockModeType lockModeType) {
+		return find(entityID.getEntityClass(), entityID.getId(), lockModeType);
+	}
+
+	public <Entity, ID extends AbstractID<Entity, ?>> Optional<Entity> findOne(ID entityID, LockModeType lockModeType) {
+		return wrapOne(() -> find(entityID.getEntityClass(), entityID.getId(), lockModeType));
 	}
 
 	@Override
@@ -99,13 +129,38 @@ public class SmartEntityManager implements EntityManager {
 	) {
 		return em.find(aClass, o, lockModeType, map);
 	}
-	public <Entity, ID extends AbstractID<Entity, ID>> Entity find(
+
+	public <T> Optional<T> findOne(
+			Class<T> aClass,
+			Object o,
+			LockModeType lockModeType,
+			Map<String, Object> map
+	) {
+		return wrapOne(() -> em.find(aClass, o, lockModeType, map));
+	}
+	public <Entity, ID extends AbstractID<Entity, ?>> Entity find(
 			ID entityID,
 			LockModeType lockModeType,
 			Map<String, Object> map
 	) {
-		Entity result = find(entityID.getEntityClass(), entityID.getId(), lockModeType, map);
-		return result;
+		return find(entityID.getEntityClass(), entityID.getId(), lockModeType, map);
+	}
+
+	public <Entity, ID extends AbstractID<Entity, ?>> Optional<Entity> findOne(
+			ID entityID,
+			LockModeType lockModeType,
+			Map<String, Object> map
+	) {
+		return wrapOne(() -> find(entityID.getEntityClass(), entityID.getId(), lockModeType, map));
+	}
+
+	private <Entity> Optional<Entity> wrapOne(Supplier<Entity> entity) {
+		try {
+			Optional<Entity> result = Optional.of(entity.get());
+			return result;
+		} catch (NoResultException nre) {
+			return Optional.empty();
+		}
 	}
 
 	@Override
@@ -113,7 +168,7 @@ public class SmartEntityManager implements EntityManager {
 		return em.getReference(aClass, o);
 	}
 
-	public <Entity, ID extends AbstractID<Entity, ID>> Entity getReference(ID entityID) {
+	public <Entity, ID extends AbstractID<Entity, ?>> Entity getReference(ID entityID) {
 		Entity result = getReference(entityID.getEntityClass(), entityID.getId());
 		return result;
 	}

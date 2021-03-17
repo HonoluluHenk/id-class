@@ -19,8 +19,14 @@ public class IDJavaTypeDescriptor implements JavaTypeDescriptor<ID> {
 	@SuppressWarnings("FieldHasSetterButNoGetter")
 	private Supplier<Class<?>> typeArgumentSupplier = null;
 
+	@Deprecated
 	@Override
 	public Class<ID> getJavaTypeClass() {
+		return ID.class;
+	}
+
+	@Override
+	public Class<ID> getJavaType() {
 		return ID.class;
 	}
 

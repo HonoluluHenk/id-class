@@ -58,6 +58,7 @@ public class SmartTypedQuery<T> implements TypedQuery<T> {
 		return typedQuery.getSingleResult();
 	}
 
+
 	/**
 	 * Wrap {@link #getSingleResult()} in a {@link Optional} in case of {@link NoResultException}.
 	 *
@@ -76,7 +77,7 @@ public class SmartTypedQuery<T> implements TypedQuery<T> {
 	 * @throws PersistenceException         – if the query execution exceeds the query timeout value set and the
 	 *                                      transaction is rolled back
 	 */
-	public Optional<T> findOne() {
+	public Optional<T> getSoleResult() {
 		try {
 			return Optional.of(getSingleResult());
 		} catch (NoResultException nre) {

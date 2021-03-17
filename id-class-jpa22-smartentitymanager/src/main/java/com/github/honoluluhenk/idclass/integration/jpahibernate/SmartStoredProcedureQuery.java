@@ -4,13 +4,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Parameter;
 import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceException;
+import javax.persistence.QueryTimeoutException;
 import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TemporalType;
 
@@ -156,6 +161,29 @@ public class SmartStoredProcedureQuery implements StoredProcedureQuery {
 	@Override
 	public Object getSingleResult() {
 		return storedProcedureQuery.getSingleResult();
+	}
+
+
+	/**
+	 * Wrap {@link #getSingleResult()} in a {@link Optional} in case of {@link NoResultException}.
+	 *
+	 * Throws all exceptions from {@link #getSingleResult()} for the same reasons
+	 * (except NoResultException for obvious reaons).
+	 *
+	 * @throws NonUniqueResultException if more than one result
+	 * @throws QueryTimeoutException if the query execution exceeds
+	 *         the query timeout value set and only the statement is
+	 *         rolled back
+	 * @throws PersistenceException if the query execution exceeds
+	 *         the query timeout value set and the transaction
+	 *         is rolled back
+	 */
+	public Optional<Object> getSoleResult() {
+		try {
+			return Optional.of(getSingleResult());
+		} catch (NoResultException nre) {
+			return Optional.empty();
+		}
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class SmartQuery implements Query {
 	 * @throws PersistenceException         – if the query execution exceeds the query timeout value set and the
 	 *                                      transaction is rolled back
 	 */
-	public Optional<Object> findOne() {
+	public Optional<Object> getOneResult() {
 		try {
 			return Optional.of(getSingleResult());
 		} catch (NoResultException nre) {
