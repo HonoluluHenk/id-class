@@ -10,5 +10,7 @@ public class IDTypeModule extends SimpleModule {
 	public IDTypeModule() {
 		addSerializer(ID.class, new IDSerializer());
 		addDeserializer(ID.class, new IDDeserializer());
+		addKeySerializer(ID.class, new IDKeySerializer());
+		addKeyDeserializer(ID.class, new IDKeyDeserializer());
 	}
 }

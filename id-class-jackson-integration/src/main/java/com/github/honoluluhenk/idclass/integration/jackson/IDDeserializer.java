@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.github.honoluluhenk.idclass.ID;
+import org.jetbrains.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 
@@ -36,7 +37,7 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 	}
 
 	@Override
-	public ID<?> deserialize(
+	public @Nullable ID<?> deserialize(
 			JsonParser jsonParser,
 			DeserializationContext deserializationContext
 	) throws IOException {
@@ -64,7 +65,7 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 		return new IDDeserializer(idEntityParamClass);
 	}
 
-	private Class<?> parseIDGenericTypeArgument(JavaType idType) {
+	static Class<?> parseIDGenericTypeArgument(JavaType idType) {
 		Class<?> result = idType
 				.getBindings()
 				.getTypeParameters()

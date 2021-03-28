@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 class BasicSerializationAndDeserializationTest {
 
 	@Test
-	void id_in_body() {
+	void id_works_in_request_body() {
 		given()
 				.when()
 				.contentType(ContentType.JSON)
@@ -31,7 +31,7 @@ class BasicSerializationAndDeserializationTest {
 	}
 
 	@Test
-	void id_in_path_param() {
+	void id_works_in_path_param() {
 		given()
 				.when()
 				.contentType(ContentType.JSON)
@@ -44,7 +44,7 @@ class BasicSerializationAndDeserializationTest {
 	}
 
 	@Test
-	void id_in_response() {
+	void id_works_as_response() {
 		given()
 				.when()
 				.contentType(ContentType.JSON)
@@ -58,7 +58,7 @@ class BasicSerializationAndDeserializationTest {
 	}
 
 	@Test
-	void id_in_response_body() {
+	void id_works_in_response_body() {
 		given()
 				.when()
 				.contentType(ContentType.JSON)

@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 import com.github.honoluluhenk.idclass.ID;
 
 @SuppressWarnings("rawtypes")
-public class IDSerializer extends StdSerializer<ID> {
+public class IDKeySerializer extends StdSerializer<ID> {
 	private static final long serialVersionUID = -7076370540705726828L;
 
-	public IDSerializer() {
+	public IDKeySerializer() {
 		super(SimpleType.constructUnsafe(ID.class));
 	}
 
@@ -27,6 +27,6 @@ public class IDSerializer extends StdSerializer<ID> {
 		}
 
 		String serialized = value.getId().toString();
-		gen.writeString(serialized);
+		gen.writeFieldName(serialized);
 	}
 }
