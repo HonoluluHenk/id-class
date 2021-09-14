@@ -48,4 +48,35 @@ class KeySerializationAndDeserializationTest {
 		;
 	}
 
+	@Test
+	void map_as_param_deserializes_ID_keys() {
+		given()
+				.when()
+				.contentType(ContentType.JSON)
+				.body("{" +
+						"\"11111111-76b7-4ac6-a391-d6cd67db1111\": {\"text\": \"id1\"}," +
+						"\"22222222-76b7-4ac6-a391-d6cd67db2222\": {\"text\": \"id2\"}" +
+						"}")
+				.post("/key/map-as-param")
+				.then()
+				.log().ifValidationFails()
+				.statusCode(200)
+				.body(is("ID[11111111-76b7-4ac6-a391-d6cd67db1111,SimpleEntity]=SimpleEntity(text=id1)"
+						+ "|"
+						+ "ID[22222222-76b7-4ac6-a391-d6cd67db2222,SimpleEntity]=SimpleEntity(text=id2)"));
+	}
+
+	@Test
+	void map_as_response_serializes_ID_keys() {
+		given()
+				.when()
+				.contentType(ContentType.JSON)
+				.post("/key/map-as-response")
+				.then()
+				.log().ifValidationFails()
+				.statusCode(200)
+				.body("11111111-76b7-4ac6-a391-d6cd67db1111.text", equalTo("id1"))
+				.body("22222222-76b7-4ac6-a391-d6cd67db2222.text", equalTo("id2"))
+		;
+	}
 }

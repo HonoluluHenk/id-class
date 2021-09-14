@@ -10,9 +10,8 @@ import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdKeyDeserializer;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.github.honoluluhenk.idclass.ID;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import static com.github.honoluluhenk.idclass.integration.jackson.IDDeserializer.parseIDGenericTypeArgument;
 import static java.util.Objects.requireNonNull;
 
 public class IDKeyDeserializer extends StdKeyDeserializer implements ContextualKeyDeserializer {
@@ -47,18 +46,29 @@ public class IDKeyDeserializer extends StdKeyDeserializer implements ContextualK
 			DeserializationContext ctxt,
 			BeanProperty property
 	) {
-		JavaType keyType = parseMapKeyType(property.getType());
-		Class<?> idEntityParamClass = parseIDGenericTypeArgument(keyType);
+		JavaType idType;
+		if (property == null) {
+			// direct method parameter, e.g. public void foo(Map<ID<Foo>, Foo> fooMap)
+			idType = ctxt.getContextualType();
+		} else {
+			idType = property.getType();
+		}
+
+		Class<?> idEntityParamClass = parseIDGenericTypeArgument(idType);
 
 		return new IDKeyDeserializer(idEntityParamClass);
 	}
 
-	private JavaType parseMapKeyType(JavaType type) {
+	private Class<?> parseIDGenericTypeArgument(JavaType type) {
+		if (!(type instanceof MapLikeType)) {
+			throw new IllegalArgumentException("ID.class currently only supports Maps-keys but got: " + type);
+		}
 		MapLikeType mapType = (MapLikeType) type;
 
-		JavaType keyType = mapType.getKeyType();
+		Class<?> result = TypeUtil.readGenericTypeArg(mapType.getKeyType(), 0)
+				.getRawClass();
 
-		return keyType;
+		return result;
 	}
 
 }

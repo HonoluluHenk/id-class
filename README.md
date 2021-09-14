@@ -159,6 +159,7 @@ Now you can use it in all possible places in JAX-RS ressources/DTOs:
 class JaxHello {
 	private ID<SomeEntity> entityID;
 	private String name;
+    private Map<ID<SomeEntity>, SomeEntity> entityMap;
 	// getters/setters omitted for brevity
 }
 

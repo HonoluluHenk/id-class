@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.github.honoluluhenk.idclass.ID;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import static java.util.Objects.requireNonNull;
 
@@ -65,11 +65,8 @@ public class IDDeserializer extends StdDeserializer<ID<?>> implements Contextual
 		return new IDDeserializer(idEntityParamClass);
 	}
 
-	static Class<?> parseIDGenericTypeArgument(JavaType idType) {
-		Class<?> result = idType
-				.getBindings()
-				.getTypeParameters()
-				.get(0)
+	private Class<?> parseIDGenericTypeArgument(JavaType idType) {
+		Class<?> result = TypeUtil.readGenericTypeArg(idType, 0)
 				.getRawClass();
 
 		return result;

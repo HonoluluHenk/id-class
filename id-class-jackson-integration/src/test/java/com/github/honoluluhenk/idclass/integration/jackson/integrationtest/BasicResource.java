@@ -45,7 +45,8 @@ public class BasicResource {
 	public SomeDTO idInResponseBody(
 			@PathParam("id") String id
 	) {
-		return new SomeDTO(ID.of(id, SomeEntity.class), "ignored");
+		return new SomeDTO()
+				.setId(ID.of(id, SomeEntity.class));
 	}
 
 	private String normalizeForTest(ID<?> id) {

@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.github.honoluluhenk.idclass.ID;
+import com.github.honoluluhenk.idclass.integration.jackson.integrationtest.fixtures.SimpleEntity;
 import com.github.honoluluhenk.idclass.integration.jackson.integrationtest.fixtures.SomeEntity;
 import com.github.honoluluhenk.idclass.integration.jackson.integrationtest.fixtures.SomeMap;
 
@@ -46,7 +47,30 @@ public class KeyResource {
 		return response;
 	}
 
-	private String normalizeForTest(ID<?> id) {
-		return id.getId() + ":" + id.getEntityClass().getSimpleName();
+	@POST
+	@Path("map-as-param")
+	public String mapAsParam(
+			Map<ID<SimpleEntity>, SimpleEntity> param
+	) {
+		String result = param.entrySet()
+				.stream()
+				.map(Object::toString)
+				.collect(Collectors.joining("|"));
+
+		return result;
+	}
+
+	@POST
+	@Path("map-as-response")
+	public Map<ID<SimpleEntity>, SimpleEntity> idMapAsParamAndResponse() {
+		Map<ID<SimpleEntity>, SimpleEntity> result = new HashMap<>();
+		result.put(
+				ID.of("11111111-76b7-4ac6-a391-d6cd67db1111", SimpleEntity.class),
+				new SimpleEntity().setText("id1"));
+		result.put(
+				ID.of("22222222-76b7-4ac6-a391-d6cd67db2222", SimpleEntity.class),
+				new SimpleEntity().setText("id2"));
+
+		return result;
 	}
 }
