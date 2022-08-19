@@ -67,7 +67,7 @@ class Foo {
 
 ```
 
-(this example is using UUIDs, but there are more and its customizable)
+(this example is using UUIDs, but there are more options and it's customizable)
 
 You will also find modules to integrate this nicely into
 
